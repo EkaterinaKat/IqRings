@@ -1,9 +1,11 @@
 package com.katysh.iqrings.view
 
 import android.annotation.SuppressLint
+import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+
 
 @SuppressLint("ClickableViewAccessibility")
 class CiDragEngine(
@@ -17,33 +19,50 @@ class CiDragEngine(
         var dX = 0f
         var dY = 0f
 
+        var clickCount = 0
+        val doubleClickTimeout: Long = 300
+        val handler = Handler()
+
         compositeImage.ciParts.forEach {
             val iv = it.imageView
 
-            iv.setOnClickListener{
-                Log.i("tag655229", "setOnClickListener")
-            }
-            iv.setOnLongClickListener{
-                Log.i("tag655229", "setOnLongClickListener")
-                true
-            }
-
             iv.setOnTouchListener { view: View, event: MotionEvent ->
-                var moved = false
                 when (event.action) {
                     MotionEvent.ACTION_DOWN -> {
                         dX = view.x - event.rawX
                         dY = view.y - event.rawY
+
+
+                        // Обработка кликов
+                        clickCount++
+
+                        if (clickCount == 1) {
+                            handler.postDelayed({
+                                if (clickCount == 1) {
+                                    Log.i("tag79631", "Одиночный клик")
+                                }
+                                clickCount = 0
+                            }, doubleClickTimeout)
+                        } else if (clickCount == 2) {
+                            Log.i("tag79631", "Двойной клик")
+                            clickCount = 0
+                        }
                     }
 
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
                         move(compositeImage, it, x, y)
-                        moved = true
+                        clickCount = 0
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        if (Math.abs(event.rawX + dX - iv.x) > 5 || Math.abs(event.rawY + dY - iv.y) > 5) {
+                            clickCount = 0
+                        }
                     }
                 }
-                moved
+                true
             }
         }
     }
