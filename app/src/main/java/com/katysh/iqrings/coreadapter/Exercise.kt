@@ -1,7 +1,7 @@
 package com.katysh.iqrings.coreadapter
 
 import android.content.Context
-import com.katysh.iqrings.readAssetFile
+import com.katysh.iqrings.util.readAssetFile
 
 class Exercise(
     context: Context,

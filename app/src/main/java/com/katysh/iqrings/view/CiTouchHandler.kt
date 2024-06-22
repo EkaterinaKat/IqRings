@@ -2,20 +2,20 @@ package com.katysh.iqrings.view
 
 import android.annotation.SuppressLint
 import android.os.Handler
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.katysh.iqrings.util.ActionMoveListener
+import com.katysh.iqrings.util.OneInKnob
 
 
 @SuppressLint("ClickableViewAccessibility")
-class CiDragEngine(
-    private var topBound: Int,
-    private var bottomBound: Int,
-    private var leftBound: Int,
-    private var rightBound: Int,
+class CiTouchHandler(
+    private val moveListener: ActionMoveListener? = null,
+    private val onClick: OneInKnob<CompositeImage>? = null,
+    private val onDoubleClick: OneInKnob<CompositeImage>? = null
 ) {
 
-    fun makeDraggable(compositeImage: CompositeImage) {
+    fun setTouchListener(compositeImage: CompositeImage) {
         var dX = 0f
         var dY = 0f
 
@@ -32,19 +32,18 @@ class CiDragEngine(
                         dX = view.x - event.rawX
                         dY = view.y - event.rawY
 
-
                         // Обработка кликов
                         clickCount++
 
                         if (clickCount == 1) {
                             handler.postDelayed({
                                 if (clickCount == 1) {
-                                    Log.i("tag79631", "Одиночный клик")
+                                    onClick?.execute(compositeImage)
                                 }
                                 clickCount = 0
                             }, doubleClickTimeout)
                         } else if (clickCount == 2) {
-                            Log.i("tag79631", "Двойной клик")
+                            onDoubleClick?.execute(compositeImage)
                             clickCount = 0
                         }
                     }
@@ -52,7 +51,7 @@ class CiDragEngine(
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
-                        move(compositeImage, it, x, y)
+                        moveListener?.execute(compositeImage, it, x, y)
                         clickCount = 0
                     }
 
@@ -64,30 +63,6 @@ class CiDragEngine(
                 }
                 true
             }
-        }
-    }
-
-    //den - dragged part new coordinate
-    //de - dragged part
-    fun move(compositeImage: CompositeImage, draggedCiPart: CiPart, denX: Float, denY: Float) {
-
-        val deLeftBound = (compositeImage.leftBound - draggedCiPart.x).toFloat()
-        val deRightBound = (compositeImage.rightBound - draggedCiPart.x).toFloat()
-        val deTopBound = (compositeImage.topBound - draggedCiPart.y).toFloat()
-        val deBottomBound = (compositeImage.bottomBound - draggedCiPart.y).toFloat()
-
-        val correctedDenX = denX.coerceIn(leftBound-deLeftBound, rightBound-deRightBound)
-        val correctedDenY = denY.coerceIn(topBound-deTopBound, bottomBound-deBottomBound)
-
-        for (part in compositeImage.ciParts) {
-            val x = correctedDenX - draggedCiPart.x + part.x
-            val y = correctedDenY - draggedCiPart.y + part.y
-
-            //move
-            part.imageView.animate()
-                .x(x).y(y)
-                .setDuration(0)
-                .start()
         }
     }
 }

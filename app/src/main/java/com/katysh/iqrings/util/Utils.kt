@@ -1,4 +1,4 @@
-package com.katysh.iqrings
+package com.katysh.iqrings.util
 
 import android.content.Context
 import android.widget.ImageView

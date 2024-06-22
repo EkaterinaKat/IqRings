@@ -3,7 +3,6 @@ package com.katysh.iqrings.view
 import android.content.Context
 import android.widget.ImageView
 import com.katysh.iqrings.R
-import com.katysh.iqrings.getImageView
 import com.katysh.iqrings.model.Angle
 import com.katysh.iqrings.model.Ball
 import com.katysh.iqrings.model.Detail
@@ -11,6 +10,7 @@ import com.katysh.iqrings.model.DetailConfig
 import com.katysh.iqrings.model.Element
 import com.katysh.iqrings.model.Holey
 import com.katysh.iqrings.model.Solid
+import com.katysh.iqrings.util.getImageView
 
 class DetailFactory(
     private val context: Context,
