@@ -7,11 +7,17 @@ class RootManager(
     private var root: RelativeLayout
 ) {
 
-    fun placeOnScreen(imageView: ImageView,  x: Int, y: Int, w: Int, h: Int){
+    fun placeOnScreen(imageView: ImageView, x: Int, y: Int, w: Int, h: Int) {
         val params = RelativeLayout.LayoutParams(w, h)
         params.leftMargin = x
         params.topMargin = y
 
         root.addView(imageView, params)
+    }
+
+    fun remove(ci: CompositeImage) {
+        for (part in ci.ciParts) {
+            root.removeView(part.imageView)
+        }
     }
 }

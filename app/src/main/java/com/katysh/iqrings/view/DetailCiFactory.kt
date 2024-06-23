@@ -3,16 +3,14 @@ package com.katysh.iqrings.view
 import android.content.Context
 import android.widget.ImageView
 import com.katysh.iqrings.R
-import com.katysh.iqrings.model.Angle
 import com.katysh.iqrings.model.Ball
-import com.katysh.iqrings.model.Detail
-import com.katysh.iqrings.model.DetailConfig
+import com.katysh.iqrings.model.DetailCiData
 import com.katysh.iqrings.model.Element
 import com.katysh.iqrings.model.Holey
 import com.katysh.iqrings.model.Solid
 import com.katysh.iqrings.util.getImageView
 
-class DetailFactory(
+class DetailCiFactory(
     private val context: Context,
     gsm: GameSizeParams
 ) {
@@ -28,16 +26,16 @@ class DetailFactory(
     private val bbBeamLength = gsm.bbBeamLength.toInt()
     private val beamWidth = gsm.beamWidth.toInt()
 
-    fun createDetail(detailConfig: DetailConfig): Detail {
+    fun createDetailCi(data: DetailCiData): CompositeImage {
         val parts = mutableListOf<CiPart>()
 
         val centerCenterCoords = Coordinates(0, 0)
-        val rightCenterCoords = getRightCoordinates(detailConfig.angle)
-        val leftCenterCoords = Coordinates(elementDistance, 0)
+        val rightCenterCoords = getElementCoordinates(data.rightDirection)
+        val leftCenterCoords = getElementCoordinates(data.leftDirection)
 
-        val leftElement = Element(detailConfig.left, leftCenterCoords)
-        val centerElement = Element(detailConfig.center, centerCenterCoords)
-        val rightElement = Element(detailConfig.right, rightCenterCoords)
+        val leftElement = Element(data.left, leftCenterCoords)
+        val centerElement = Element(data.center, centerCenterCoords)
+        val rightElement = Element(data.right, rightCenterCoords)
 
         parts.add(getBeamPart(centerElement, leftElement))
         parts.add(getBeamPart(rightElement, centerElement))
@@ -46,13 +44,7 @@ class DetailFactory(
         parts.add(getElementPart(centerElement))
         parts.add(getElementPart(rightElement))
 
-        return Detail(
-            detailConfig.angle,
-            CompositeImage(parts),
-            leftElement,
-            centerElement,
-            rightElement
-        )
+        return CompositeImage(parts)
     }
 
     private fun getBeamPart(element1: Element, element2: Element): CiPart {
@@ -94,14 +86,21 @@ class DetailFactory(
         }
     }
 
-    private fun getRightCoordinates(angle: Angle): Coordinates {
-        return when (angle) {
-            Angle.ACUTE -> Coordinates(elementDistance / 2, rowDistance)
+    private fun getElementCoordinates(direction: Int): Coordinates {
+        return when (direction) {
+            1 -> Coordinates(elementDistance / 2, rowDistance)
 
-            Angle.OBTUSE -> Coordinates(-elementDistance / 2, rowDistance)
+            2 -> Coordinates(-elementDistance / 2, rowDistance)
 
-            Angle.STRAIGHT -> Coordinates(-elementDistance, 0)
+            3 -> Coordinates(-elementDistance, 0)
 
+            4 -> Coordinates(-elementDistance / 2, -rowDistance)
+
+            5 -> Coordinates(elementDistance / 2, -rowDistance)
+
+            0 -> Coordinates(elementDistance, 0)
+
+            else -> throw RuntimeException()
         }
     }
 

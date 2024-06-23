@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
+import com.katysh.iqrings.model.Detail
 import com.katysh.iqrings.util.ActionMoveListener
 import com.katysh.iqrings.util.OneInKnob
 
-
 @SuppressLint("ClickableViewAccessibility")
-class CiTouchHandler(
+class TouchHandler(
     private val moveListener: ActionMoveListener? = null,
-    private val onClick: OneInKnob<CompositeImage>? = null,
-    private val onDoubleClick: OneInKnob<CompositeImage>? = null
+    private val onClick: OneInKnob<Detail>? = null,
+    private val onDoubleClick: OneInKnob<Detail>? = null
 ) {
 
-    fun setTouchListener(compositeImage: CompositeImage) {
+    fun setTouchListener(detail: Detail) {
         var dX = 0f
         var dY = 0f
 
@@ -23,7 +23,7 @@ class CiTouchHandler(
         val doubleClickTimeout: Long = 300
         val handler = Handler()
 
-        compositeImage.ciParts.forEach {
+        detail.compositeImage.ciParts.forEach {
             val iv = it.imageView
 
             iv.setOnTouchListener { view: View, event: MotionEvent ->
@@ -38,12 +38,12 @@ class CiTouchHandler(
                         if (clickCount == 1) {
                             handler.postDelayed({
                                 if (clickCount == 1) {
-                                    onClick?.execute(compositeImage)
+                                    onClick?.execute(detail)
                                 }
                                 clickCount = 0
                             }, doubleClickTimeout)
                         } else if (clickCount == 2) {
-                            onDoubleClick?.execute(compositeImage)
+                            onDoubleClick?.execute(detail)
                             clickCount = 0
                         }
                     }
@@ -51,7 +51,7 @@ class CiTouchHandler(
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
-                        moveListener?.execute(compositeImage, it, x, y)
+                        moveListener?.execute(detail.compositeImage, it, x, y)
                         clickCount = 0
                     }
 
