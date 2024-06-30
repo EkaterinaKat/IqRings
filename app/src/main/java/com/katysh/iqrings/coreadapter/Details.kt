@@ -9,6 +9,7 @@ import com.katysh.iqrings.model.Holey
 import com.katysh.iqrings.model.Solid
 
 val detailConfig0 = DetailConfig(
+    0,
     ACUTE,
     Ball,
     Holey(listOf(4)),
@@ -16,6 +17,7 @@ val detailConfig0 = DetailConfig(
 )
 
 val detailConfig1 = DetailConfig(
+    1,
     STRAIGHT,
     Ball,
     Solid,
@@ -23,6 +25,7 @@ val detailConfig1 = DetailConfig(
 )
 
 val detailConfig2 = DetailConfig(
+    2,
     OBTUSE,
     Holey(listOf(1)),
     Solid,
@@ -30,6 +33,7 @@ val detailConfig2 = DetailConfig(
 )
 
 val detailConfig3 = DetailConfig(
+    3,
     ACUTE,
     Holey(listOf(1)),
     Ball,
@@ -37,6 +41,7 @@ val detailConfig3 = DetailConfig(
 )
 
 val detailConfig4 = DetailConfig(
+    4,
     STRAIGHT,
     Ball,
     Holey(listOf(1, 2)),
@@ -44,6 +49,7 @@ val detailConfig4 = DetailConfig(
 )
 
 val detailConfig5 = DetailConfig(
+    5,
     OBTUSE,
     Holey(listOf(0)),
     Solid,
@@ -51,6 +57,7 @@ val detailConfig5 = DetailConfig(
 )
 
 val detailConfig6 = DetailConfig(
+    6,
     OBTUSE,
     Ball,
     Holey(listOf(5)),
@@ -58,6 +65,7 @@ val detailConfig6 = DetailConfig(
 )
 
 val detailConfig7 = DetailConfig(
+    7,
     OBTUSE,
     Holey(listOf(4)),
     Solid,
@@ -65,6 +73,7 @@ val detailConfig7 = DetailConfig(
 )
 
 val detailConfig8 = DetailConfig(
+    8,
     ACUTE,
     Holey(listOf(0)),
     Ball,
@@ -72,6 +81,7 @@ val detailConfig8 = DetailConfig(
 )
 
 val detailConfig9 = DetailConfig(
+    9,
     OBTUSE,
     Holey(listOf(2)),
     Solid,
@@ -79,6 +89,7 @@ val detailConfig9 = DetailConfig(
 )
 
 val detailConfig10 = DetailConfig(
+    10,
     ACUTE,
     Ball,
     Holey(listOf(3)),
@@ -86,6 +97,7 @@ val detailConfig10 = DetailConfig(
 )
 
 val detailConfig11 = DetailConfig(
+    11,
     STRAIGHT,
     Holey(listOf(4)),
     Solid,

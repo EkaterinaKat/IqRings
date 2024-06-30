@@ -1,34 +1,40 @@
 package com.katysh.iqrings.view
 
-import com.katysh.iqrings.util.ActionMoveListener
+import com.katysh.iqrings.model.Detail
 
 class CiMoveManager(
     private var topBound: Int,
     private var bottomBound: Int,
     private var leftBound: Int,
-    private var rightBound: Int,
-) : ActionMoveListener {
+    private var rightBound: Int
+) {
 
-    //den - dragged part new coordinate
-    //de - dragged part
-    override fun execute(
-        compositeImage: CompositeImage,
-        draggedCiPart: CiPart,
-        denX: Float,
-        denY: Float
+    //dpn - dragged part new coordinate
+    fun execute(
+        detail: Detail,
+        draggedPart: CiPart,
+        dpnX: Float,
+        dpnY: Float
     ) {
 
-        val deLeftBound = (compositeImage.leftBound - draggedCiPart.x).toFloat()
-        val deRightBound = (compositeImage.rightBound - draggedCiPart.x).toFloat()
-        val deTopBound = (compositeImage.topBound - draggedCiPart.y).toFloat()
-        val deBottomBound = (compositeImage.bottomBound - draggedCiPart.y).toFloat()
+        val correctedDpnX = dpnX.coerceIn(
+            leftBound - draggedPart.leftBound!!,
+            rightBound - draggedPart.rightBound!!
+        )
+        val correctedDpnY = dpnY.coerceIn(
+            topBound - draggedPart.topBound!!,
+            bottomBound - draggedPart.bottomBound!!
+        )
 
-        val correctedDenX = denX.coerceIn(leftBound - deLeftBound, rightBound - deRightBound)
-        val correctedDenY = denY.coerceIn(topBound - deTopBound, bottomBound - deBottomBound)
+        val newDetailX = correctedDpnX - draggedPart.x
+        val newDetailY = correctedDpnY - draggedPart.y
 
-        for (part in compositeImage.ciParts) {
-            val x = correctedDenX - draggedCiPart.x + part.x
-            val y = correctedDenY - draggedCiPart.y + part.y
+        detail.x = newDetailX.toInt()
+        detail.y = newDetailY.toInt()
+
+        for (part in detail.compositeImage.parts) {
+            val x = correctedDpnX - draggedPart.x + part.x
+            val y = correctedDpnY - draggedPart.y + part.y
 
             //move
             part.imageView.animate()

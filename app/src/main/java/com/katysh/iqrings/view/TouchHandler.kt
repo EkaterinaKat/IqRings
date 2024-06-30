@@ -5,12 +5,11 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import com.katysh.iqrings.model.Detail
-import com.katysh.iqrings.util.ActionMoveListener
 import com.katysh.iqrings.util.OneInKnob
 
 @SuppressLint("ClickableViewAccessibility")
 class TouchHandler(
-    private val moveListener: ActionMoveListener? = null,
+    private val moveManager: CiMoveManager? = null,
     private val onClick: OneInKnob<Detail>? = null,
     private val onDoubleClick: OneInKnob<Detail>? = null
 ) {
@@ -23,7 +22,7 @@ class TouchHandler(
         val doubleClickTimeout: Long = 300
         val handler = Handler()
 
-        detail.compositeImage.ciParts.forEach {
+        detail.compositeImage.parts.forEach {
             val iv = it.imageView
 
             iv.setOnTouchListener { view: View, event: MotionEvent ->
@@ -51,7 +50,7 @@ class TouchHandler(
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
-                        moveListener?.execute(detail.compositeImage, it, x, y)
+                        moveManager?.execute(detail, it, x, y)
                         clickCount = 0
                     }
 

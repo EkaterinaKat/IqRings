@@ -19,35 +19,27 @@ class DetailManager(
     private val moveManager = CiMoveManager(0, screenScale.sh, 0, screenScale.sw)
     private val detailCiFactory = DetailCiFactory(context, gameSizeParams)
     private val touchHandler = TouchHandler(
-        moveListener = moveManager,
+        moveManager = moveManager,
         onClick = { rotate(it) },
         onDoubleClick = { flip(it) }
     )
 
     fun addDetail(config: DetailConfig) {
-        placeDetailOnScreen(createDetail(config))
+        placeOnScreen(createDetail(config))
     }
 
     private fun createDetail(config: DetailConfig): Detail {
-        val detail = Detail(config)
+        val detail = Detail(config, screenScale.sw / 2, screenScale.sh / 2)
         setCi(detail)
         return detail
     }
 
-    private fun placeDetailOnScreen(detail: Detail) {
-        placeCiOnScreen(
-            detail.compositeImage,
-            screenScale.sw / 2,
-            screenScale.sh / 2
-        )
-    }
-
-    private fun placeCiOnScreen(compositeImage: CompositeImage, x: Int, y: Int) {
-        for (part in compositeImage.ciParts) {
+    private fun placeOnScreen(detail: Detail) {
+        for (part in detail.compositeImage.parts) {
             rootManager.placeOnScreen(
                 part.imageView,
-                x + part.x,
-                y + part.y,
+                detail.x + part.x,
+                detail.y + part.y,
                 part.w,
                 part.h
             )
@@ -67,7 +59,7 @@ class DetailManager(
     private fun onPositionChange(detail: Detail) {
         rootManager.remove(detail.compositeImage)
         setCi(detail)
-        placeDetailOnScreen(detail)
+        placeOnScreen(detail)
     }
 
     private fun setCi(detail: Detail) {

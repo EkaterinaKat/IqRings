@@ -8,4 +8,9 @@ data class CiPart(
     val y: Int,
     val w: Int,
     val h: Int
-)
+) {
+    var topBound: Float? = null
+    var bottomBound: Float? = null
+    var leftBound: Float? = null
+    var rightBound: Float? = null
+}
