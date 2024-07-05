@@ -14,6 +14,7 @@ class GameSizeParams(ss: ScreenScale) {
 
     val holeDistance = fieldWidth / 5.5
     val holeSize = holeDistance * 0.7
+    val glowSize = holeSize * 1.2
     val rowDistance = holeDistance * sqrt(3.0) / 2
 
     val highestRowY = fieldCenterY - 1.5 * rowDistance

@@ -2,15 +2,16 @@ package com.katysh.iqrings.view
 
 import com.katysh.iqrings.model.Detail
 
-class CiMoveManager(
+class MoveManager(
     private var topBound: Int,
     private var bottomBound: Int,
     private var leftBound: Int,
-    private var rightBound: Int
+    private var rightBound: Int,
+    private var interactionManager: InteractionManager
 ) {
 
     //dpn - dragged part new coordinate
-    fun execute(
+    fun onActionMove(
         detail: Detail,
         draggedPart: CiPart,
         dpnX: Float,
@@ -42,5 +43,14 @@ class CiMoveManager(
                 .setDuration(0)
                 .start()
         }
+
+        interactionManager.reportMove(detail)
+    }
+
+    fun onActionUp(detail: Detail) {
+        //todo
+
+        //todo мб interactionManager должен только о чём то сообщать CiMoveManager
+        // а CiMoveManager в свою очередь будет переносить детали куда нужно
     }
 }

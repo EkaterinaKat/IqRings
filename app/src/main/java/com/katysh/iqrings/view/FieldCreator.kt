@@ -1,10 +1,12 @@
 package com.katysh.iqrings.view
 
 import android.content.Context
+import android.view.View.GONE
 import android.widget.ImageView
 import com.katysh.iqrings.R
 import com.katysh.iqrings.model.Field
 import com.katysh.iqrings.model.Hole
+import com.katysh.iqrings.model.IntXY
 
 class FieldCreator(
     private val gsm: GameSizeParams,
@@ -26,28 +28,45 @@ class FieldCreator(
 
     private fun createHole(row: Int, column: Int): Hole {
         val distance = gsm.holeDistance
-        val halfHole = gsm.holeSize / 2
 
         val shift = if (row % 2 == 0) 0.0 else distance / 2
         val centerX = gsm.leftmostHoleX + shift + (distance * column)
-        val imageX = centerX - halfHole
         val centerY = gsm.highestRowY + row * gsm.rowDistance
-        val imageY = centerY - halfHole
 
         val iv = ImageView(context)
         iv.setImageResource(R.mipmap.hole)
 
-        return Hole(iv, imageX.toInt(), imageY.toInt(), centerX.toInt(), centerY.toInt())
+        val glow = ImageView(context)
+        glow.setImageResource(R.mipmap.glow)
+        glow.visibility = GONE
+
+        return Hole(iv, glow, centerX.toInt(), centerY.toInt(), IntXY(column, row))
     }
 
     private fun drawField(field: Field) {
+        val halfHoleSize = (gsm.holeSize / 2).toInt()
+        val halfGlowSize = (gsm.glowSize / 2).toInt()
+
         for (hole in field.holes) {
+            val imageX = hole.centerX - halfHoleSize
+            val imageY = hole.centerY - halfHoleSize
+
+            val glowX = hole.centerX - halfGlowSize
+            val glowY = hole.centerY - halfGlowSize
+
             root.placeOnScreen(
                 hole.imageView,
-                hole.imageX,
-                hole.imageY,
+                imageX,
+                imageY,
                 gsm.holeSize.toInt(),
                 gsm.holeSize.toInt()
+            )
+            root.placeOnScreen(
+                hole.glowIv,
+                glowX,
+                glowY,
+                gsm.glowSize.toInt(),
+                gsm.glowSize.toInt()
             )
         }
     }

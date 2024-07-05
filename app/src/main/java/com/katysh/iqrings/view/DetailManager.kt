@@ -8,15 +8,16 @@ import com.katysh.iqrings.model.DetailConfig
 import com.katysh.iqrings.model.ElementType
 import com.katysh.iqrings.model.Holey
 import com.katysh.iqrings.model.Solid
+import com.katysh.iqrings.util.convertDirection
 
 class DetailManager(
-    private val context: Context,
+    context: Context,
+    gameSizeParams: GameSizeParams,
+    moveManager: MoveManager,
     private val screenScale: ScreenScale,
-    private val gameSizeParams: GameSizeParams,
     private val rootManager: RootManager
 ) {
 
-    private val moveManager = CiMoveManager(0, screenScale.sh, 0, screenScale.sw)
     private val detailCiFactory = DetailCiFactory(context, gameSizeParams)
     private val touchHandler = TouchHandler(
         moveManager = moveManager,
@@ -69,26 +70,13 @@ class DetailManager(
         touchHandler.setTouchListener(detail)
     }
 
-    private fun convertDirection(direction: Int, rotation: Int, flip: Boolean): Int {
-        if (direction !in 0..5) {
-            throw RuntimeException("Недопустимое значение числа: $direction")
-        }
-
-        val flipFactor = if (flip) -1 else 1
-        return (direction * flipFactor + rotation + 12) % 6
-    }
-
     private fun getCiData(detail: Detail): DetailCiData {
         return DetailCiData(
             left = getCiDataElement(detail.configuration.left, detail.rotation, detail.flipped),
             center = getCiDataElement(detail.configuration.center, detail.rotation, detail.flipped),
             right = getCiDataElement(detail.configuration.right, detail.rotation, detail.flipped),
-            leftDirection = convertDirection(0, detail.rotation, detail.flipped),
-            rightDirection = convertDirection(
-                detail.configuration.angle.rightElementDeviation,
-                detail.rotation,
-                detail.flipped
-            )
+            leftDirection = detail.leftDirection!!,
+            rightDirection = detail.rightDirection!!
         )
     }
 

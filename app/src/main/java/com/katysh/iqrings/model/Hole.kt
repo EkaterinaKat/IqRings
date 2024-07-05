@@ -1,11 +1,22 @@
 package com.katysh.iqrings.model
 
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageView
 
 class Hole(
     val imageView: ImageView,
-    val imageX: Int,
-    val imageY: Int,
+    val glowIv: ImageView,
     val centerX: Int,
-    val centerY: Int
-)
+    val centerY: Int,
+    val position: IntXY
+) {
+
+    fun highlight(active: Boolean) {
+        if (active) {
+            glowIv.visibility = VISIBLE
+        } else {
+            glowIv.visibility = GONE
+        }
+    }
+}

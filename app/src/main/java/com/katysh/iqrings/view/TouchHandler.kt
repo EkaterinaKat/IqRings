@@ -9,7 +9,7 @@ import com.katysh.iqrings.util.OneInKnob
 
 @SuppressLint("ClickableViewAccessibility")
 class TouchHandler(
-    private val moveManager: CiMoveManager? = null,
+    private val moveManager: MoveManager? = null,
     private val onClick: OneInKnob<Detail>? = null,
     private val onDoubleClick: OneInKnob<Detail>? = null
 ) {
@@ -50,11 +50,12 @@ class TouchHandler(
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
-                        moveManager?.execute(detail, it, x, y)
+                        moveManager?.onActionMove(detail, it, x, y)
                         clickCount = 0
                     }
 
                     MotionEvent.ACTION_UP -> {
+                        moveManager?.onActionUp(detail)
                         if (Math.abs(event.rawX + dX - iv.x) > 5 || Math.abs(event.rawY + dY - iv.y) > 5) {
                             clickCount = 0
                         }
