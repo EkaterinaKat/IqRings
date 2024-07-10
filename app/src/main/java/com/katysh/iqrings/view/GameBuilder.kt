@@ -3,6 +3,9 @@ package com.katysh.iqrings.view
 import android.content.Context
 import android.widget.RelativeLayout
 import com.katysh.iqrings.coreadapter.detailConfig0
+import com.katysh.iqrings.coreadapter.detailConfig1
+import com.katysh.iqrings.coreadapter.detailConfig2
+import com.katysh.iqrings.model.IntXY
 
 class GameBuilder(
     context: Context,
@@ -17,9 +20,11 @@ class GameBuilder(
     private val moveManager =
         MoveManager(0, screenScale.sh, 0, screenScale.sw, interactionManager)
     private val detailManager =
-        DetailManager(context, gameSizeParams, moveManager, screenScale, rootManager)
+        DetailManager(context, gameSizeParams, moveManager, rootManager)
 
     fun startGame() {
-        detailManager.addDetail(detailConfig0)
+        detailManager.addDetail(detailConfig1, IntXY(0, 0))
+        detailManager.addDetail(detailConfig0, IntXY(1, 0))
+        detailManager.addDetail(detailConfig2, IntXY(2, 0))
     }
 }

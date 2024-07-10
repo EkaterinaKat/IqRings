@@ -1,9 +1,11 @@
 package com.katysh.iqrings.util
 
 import android.content.Context
+import android.util.Log
 import android.widget.ImageView
 import com.katysh.iqrings.model.Hole
 import com.katysh.iqrings.model.IntXY
+import com.katysh.iqrings.view.CompositeImage
 import java.io.InputStream
 import kotlin.math.sign
 
@@ -46,4 +48,17 @@ fun sgn(x: Int): Int {
     }
 }
 
+fun getDetailGridXyByGridXy(gridXY: IntXY, image: CompositeImage): IntXY {
+    val x = gridXY.x - ((image.rightBound + image.leftBound) / 2)
+    val y = gridXY.y - ((image.bottomBound + image.topBound) / 2)
+    Log.i(
+        "tag444",
+        "y $y " +
+                "gridXY.y ${gridXY.y} " +
+                "image.bottomBound ${image.bottomBound} " +
+                "image.topBound ${image.topBound}" +
+                " (image.bottomBound + image.topBound) / 2 ${(image.bottomBound + image.topBound) / 2}"
+    )
+    return IntXY(x, y)
+}
 

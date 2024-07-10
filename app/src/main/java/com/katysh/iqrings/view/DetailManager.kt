@@ -7,14 +7,28 @@ import com.katysh.iqrings.model.DetailCiData
 import com.katysh.iqrings.model.DetailConfig
 import com.katysh.iqrings.model.ElementType
 import com.katysh.iqrings.model.Holey
+import com.katysh.iqrings.model.IntXY
 import com.katysh.iqrings.model.Solid
 import com.katysh.iqrings.util.convertDirection
 
+/**
+ * gridRowColumn, gridXY и detailGridXY это всё разные сущности
+ *
+ * gridRowColumn - номера ряда и столбца.
+ *
+ * gridXY - координаты узла сетки в узлах которой должны располагаться детали, в этой координате
+ * должен находится геометрический центр фигуры. Вычисляется из gridRowColumn
+ * Для детали это значение константно.
+ *
+ * detailGridXY - координаты детали (то есть центра ее центральной фигуры) которые вычисляются из
+ * параметров изображения и gridXY.
+ * Для детали это значение перевычисляется каждый раз при флипе и повороте.
+ */
+
 class DetailManager(
     context: Context,
-    gameSizeParams: GameSizeParams,
-    moveManager: MoveManager,
-    private val screenScale: ScreenScale,
+    private val gameSizeParams: GameSizeParams,
+    private val moveManager: MoveManager,
     private val rootManager: RootManager
 ) {
 
@@ -25,22 +39,23 @@ class DetailManager(
         onDoubleClick = { flip(it) }
     )
 
-    fun addDetail(config: DetailConfig) {
-        placeOnScreen(createDetail(config))
+    fun addDetail(config: DetailConfig, gridRowColumn: IntXY) {
+        placeOnScreenInGrid(createDetail(config, gridRowColumn))
     }
 
-    private fun createDetail(config: DetailConfig): Detail {
-        val detail = Detail(config, screenScale.sw / 2, screenScale.sh / 2)
+    private fun createDetail(config: DetailConfig, gridRowColumn: IntXY): Detail {
+        val gridXY = gameSizeParams.getGridXyByGridRowColumn(gridRowColumn)
+        val detail = Detail(config, gridXY)
         setCi(detail)
         return detail
     }
 
-    private fun placeOnScreen(detail: Detail) {
+    private fun placeOnScreenInGrid(detail: Detail) {
         for (part in detail.compositeImage.parts) {
             rootManager.placeOnScreen(
                 part.imageView,
-                detail.x + part.x,
-                detail.y + part.y,
+                detail.detailGridXY.x + part.x,
+                detail.detailGridXY.y + part.y,
                 part.w,
                 part.h
             )
@@ -60,13 +75,14 @@ class DetailManager(
     private fun onPositionChange(detail: Detail) {
         rootManager.remove(detail.compositeImage)
         setCi(detail)
-        placeOnScreen(detail)
+        placeOnScreenInGrid(detail)
     }
 
     private fun setCi(detail: Detail) {
         val ciData = getCiData(detail)
         val ci = detailCiFactory.createDetailCi(ciData)
         detail.compositeImage = ci
+        detail.updatePosInGridXy()
         touchHandler.setTouchListener(detail)
     }
 

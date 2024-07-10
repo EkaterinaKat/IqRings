@@ -6,7 +6,7 @@ import com.katysh.iqrings.model.Hole
 import com.katysh.iqrings.util.getSideHolePosition
 
 class InteractionManager(
-    val field: Field,
+    private val field: Field,
     sizeParams: GameSizeParams
 ) {
 
@@ -17,10 +17,10 @@ class InteractionManager(
     }
 
     private fun highlightHoles(detail: Detail) {
-        val minX = detail.x - holeActionRadius
-        val maxX = detail.x + holeActionRadius
-        val minY = detail.y - holeActionRadius
-        val maxY = detail.y + holeActionRadius
+        val minX = detail.x!! - holeActionRadius
+        val maxX = detail.x!! + holeActionRadius
+        val minY = detail.y!! - holeActionRadius
+        val maxY = detail.y!! + holeActionRadius
 
         var centerHole: Hole? = null
 
@@ -45,9 +45,5 @@ class InteractionManager(
             field.holesXyMap[getSideHolePosition(centerHole, detail.rightDirection!!)]
 
         field.highlightHoles(centerHole, leftHole, rightHole)
-    }
-
-    companion object {
-        val PI = 3.14
     }
 }

@@ -8,7 +8,7 @@ class CompositeImage(val parts: List<CiPart>) {
     var rightBound = 0
 
     init {
-        //вычисляем границы CompositeImage
+        //вычисляем границы CI относительно центра CI
         val topBounds = mutableListOf<Int>()
         val bottomBounds = mutableListOf<Int>()
         val leftBounds = mutableListOf<Int>()
@@ -26,7 +26,7 @@ class CompositeImage(val parts: List<CiPart>) {
         leftBound = leftBounds.min()
         rightBound = rightBounds.max()
 
-        //вычисляем границы частей
+        //вычисляем границы CI относительно xy частей
         for (part in parts) {
             part.leftBound = (leftBound - part.x).toFloat()
             part.rightBound = (rightBound - part.x).toFloat()

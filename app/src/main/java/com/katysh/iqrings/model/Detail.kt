@@ -1,6 +1,7 @@
 package com.katysh.iqrings.model
 
 import com.katysh.iqrings.util.convertDirection
+import com.katysh.iqrings.util.getDetailGridXyByGridXy
 import com.katysh.iqrings.view.CompositeImage
 
 /**
@@ -8,9 +9,13 @@ import com.katysh.iqrings.view.CompositeImage
  */
 class Detail(
     val configuration: DetailConfig,
-    var x: Int,
-    var y: Int
+    private val gridXY: IntXY
 ) {
+
+    //эти значения должны устанавливаться только во время движения
+    // и использоваться только после начала движения
+    var x: Int? = null
+    var y: Int? = null
 
     var rotation: Int = 0
         set(value) {
@@ -28,6 +33,8 @@ class Detail(
 
     lateinit var compositeImage: CompositeImage
 
+    lateinit var detailGridXY: IntXY
+
     init {
         updateDirections()
     }
@@ -39,5 +46,9 @@ class Detail(
             rotation,
             flipped
         )
+    }
+
+    fun updatePosInGridXy() {
+        detailGridXY = getDetailGridXyByGridXy(gridXY, compositeImage)
     }
 }
