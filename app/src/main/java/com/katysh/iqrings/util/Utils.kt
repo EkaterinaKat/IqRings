@@ -1,8 +1,9 @@
 package com.katysh.iqrings.util
 
 import android.content.Context
-import android.util.Log
 import android.widget.ImageView
+import com.google.gson.Gson
+import com.katysh.iqrings.coreadapter.Exercise
 import com.katysh.iqrings.model.Hole
 import com.katysh.iqrings.model.IntXY
 import com.katysh.iqrings.view.CompositeImage
@@ -51,14 +52,12 @@ fun sgn(x: Int): Int {
 fun getDetailGridXyByGridXy(gridXY: IntXY, image: CompositeImage): IntXY {
     val x = gridXY.x - ((image.rightBound + image.leftBound) / 2)
     val y = gridXY.y - ((image.bottomBound + image.topBound) / 2)
-    Log.i(
-        "tag444",
-        "y $y " +
-                "gridXY.y ${gridXY.y} " +
-                "image.bottomBound ${image.bottomBound} " +
-                "image.topBound ${image.topBound}" +
-                " (image.bottomBound + image.topBound) / 2 ${(image.bottomBound + image.topBound) / 2}"
-    )
     return IntXY(x, y)
+}
+
+fun getOriginallyInstalledDetails(exercise: Exercise): List<InstalledDetail> {
+    val gson = Gson()
+    val response = gson.fromJson(exercise.configStr, GsonTaskConfig::class.java)
+    return response.details.filter { response.initial.contains(it.name.toInt()) }
 }
 

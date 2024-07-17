@@ -6,6 +6,7 @@ import com.katysh.iqrings.view.CompositeImage
 
 /**
  * x, y - координаты центра центрального элемента детали, меняются при перемещении фигуры
+ * detailGridXY - значения x, y когда фигура стоит на своём месте в сетке
  */
 class Detail(
     val configuration: DetailConfig,

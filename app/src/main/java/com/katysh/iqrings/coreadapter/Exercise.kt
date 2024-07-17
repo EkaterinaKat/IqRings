@@ -10,9 +10,11 @@ class Exercise(
 
     private var nativePtr: Long = 0
 
+    val configStr: String
+
     init {
         System.loadLibrary("NativeRingsEngine")
-        val configStr = readAssetFile(context, configAssetName)
+        configStr = readAssetFile(context, configAssetName)
         nativePtr = createExercise(configStr)
     }
 
