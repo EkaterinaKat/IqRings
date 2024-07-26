@@ -1,22 +1,15 @@
 package com.katysh.iqrings.model
 
 import com.katysh.iqrings.util.convertDirection
-import com.katysh.iqrings.util.getDetailGridXyByGridXy
 import com.katysh.iqrings.view.CompositeImage
 
-/**
- * x, y - координаты центра центрального элемента детали, меняются при перемещении фигуры
- * detailGridXY - значения x, y когда фигура стоит на своём месте в сетке
- */
-class Detail(
-    val configuration: DetailConfig,
-    private val gridXY: IntXY
-) {
+abstract class Detail(val configuration: DetailConfig) {
 
-    //эти значения должны устанавливаться только во время движения
-    // и использоваться только после начала движения
-    var x: Int? = null
-    var y: Int? = null
+    var compositeImage: CompositeImage? = null
+        set(value) {
+            field = value
+            onCiUpdate()
+        }
 
     var rotation: Int = 0
         set(value) {
@@ -32,10 +25,6 @@ class Detail(
     var leftDirection: Int? = null
     var rightDirection: Int? = null
 
-    lateinit var compositeImage: CompositeImage
-
-    lateinit var detailGridXY: IntXY
-
     init {
         updateDirections()
     }
@@ -49,7 +38,5 @@ class Detail(
         )
     }
 
-    fun updatePosInGridXy() {
-        detailGridXY = getDetailGridXyByGridXy(gridXY, compositeImage)
-    }
+    abstract fun onCiUpdate()
 }

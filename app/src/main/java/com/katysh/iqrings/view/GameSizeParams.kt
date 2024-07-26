@@ -30,10 +30,10 @@ class GameSizeParams(ss: ScreenScale) {
     val bbBeamLength = (holeDistance - ballElementSize)
 
     //ключ - колонка и ряд, значение координаты
-    private val positionsInGrid: MutableMap<IntXY, IntXY> = HashMap()
+    private val rowColumnToXyMap: MutableMap<IntXY, IntXY> = HashMap()
     private val rowsHeight = listOf(
         ss.sh / 5,
-        ss.sh * 2 / 5,
+        ss.sh * 4 / 5,
     )
 
     init {
@@ -44,13 +44,13 @@ class GameSizeParams(ss: ScreenScale) {
             for (column in 0 until numOfColumns) {
                 val x = detailWidthSpace / 2 + column * detailWidthSpace
                 val y = rowsHeight[row]
-                positionsInGrid[IntXY(column, row)] = IntXY(x, y)
+                rowColumnToXyMap[IntXY(row, column)] = IntXY(x, y)
             }
         }
     }
 
     fun getGridXyByGridRowColumn(gridRowColumn: IntXY): IntXY {
-        return positionsInGrid[gridRowColumn]
-            ?: throw RuntimeException("Coordinates for given detail row and column not found")
+        return rowColumnToXyMap[gridRowColumn]
+            ?: throw RuntimeException("Coordinates for given detail row and column not found: $gridRowColumn")
     }
 }

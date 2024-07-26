@@ -6,9 +6,13 @@ import com.katysh.iqrings.model.Detail
 import com.katysh.iqrings.model.DetailCiData
 import com.katysh.iqrings.model.DetailConfig
 import com.katysh.iqrings.model.ElementType
+import com.katysh.iqrings.model.Field
+import com.katysh.iqrings.model.FixedDetail
 import com.katysh.iqrings.model.Holey
 import com.katysh.iqrings.model.IntXY
+import com.katysh.iqrings.model.MotileDetail
 import com.katysh.iqrings.model.Solid
+import com.katysh.iqrings.util.State
 import com.katysh.iqrings.util.convertDirection
 
 /**
@@ -29,50 +33,62 @@ class DetailManager(
     context: Context,
     private val gameSizeParams: GameSizeParams,
     private val moveManager: MoveManager,
-    private val rootManager: RootManager
+    private val rootManager: RootManager,
+    private val field: Field
 ) {
 
     private val detailCiFactory = DetailCiFactory(context, gameSizeParams)
     private val touchHandler = TouchHandler(
         moveManager = moveManager,
-        onClick = { rotate(it) },
-        onDoubleClick = { flip(it) }
+        onClick = { rotateByClick(it) },
+        onDoubleClick = { flipByClick(it) }
     )
 
-    fun addDetail(config: DetailConfig, gridRowColumn: IntXY) {
-        placeOnScreenInGrid(createDetail(config, gridRowColumn))
-    }
-
-    private fun createDetail(config: DetailConfig, gridRowColumn: IntXY): Detail {
+    fun addMotileDetail(config: DetailConfig, gridRowColumn: IntXY) {
         val gridXY = gameSizeParams.getGridXyByGridRowColumn(gridRowColumn)
-        val detail = Detail(config, gridXY)
+        val detail = MotileDetail(config, gridXY)
         setCi(detail)
-        return detail
+        placeOnScreenInGrid(detail)
     }
 
-    private fun placeOnScreenInGrid(detail: Detail) {
-        for (part in detail.compositeImage.parts) {
+    fun addFixedDetail(config: DetailConfig, state: State) {
+        val detail = FixedDetail(config)
+        detail.flipped = !state.isFrontSide
+        detail.rotation = convertDirection(0, state.rotation, false)
+        setCi(detail)
+        val row = state.position[0]
+        val column = state.position[1]
+        val hole = field.getHoleByRowColumn(row, column)
+        placeOnScreen(detail.compositeImage!!, IntXY(hole.centerX, hole.centerY))
+    }
+
+    private fun placeOnScreenInGrid(detail: MotileDetail) {
+        placeOnScreen(detail.compositeImage!!, detail.detailGridXY)
+    }
+
+    private fun placeOnScreen(compositeImage: CompositeImage, xy: IntXY) {
+        for (part in compositeImage.parts) {
             rootManager.placeOnScreen(
                 part.imageView,
-                detail.detailGridXY.x + part.x,
-                detail.detailGridXY.y + part.y,
+                xy.x + part.x,
+                xy.y + part.y,
                 part.w,
                 part.h
             )
         }
     }
 
-    private fun rotate(detail: Detail) {
+    private fun rotateByClick(detail: MotileDetail) {
         detail.rotation = convertDirection(detail.rotation, 1, false)
         onPositionChange(detail)
     }
 
-    private fun flip(detail: Detail) {
+    private fun flipByClick(detail: MotileDetail) {
         detail.flipped = !detail.flipped
         onPositionChange(detail)
     }
 
-    private fun onPositionChange(detail: Detail) {
+    private fun onPositionChange(detail: MotileDetail) {
         rootManager.remove(detail.compositeImage)
         setCi(detail)
         placeOnScreenInGrid(detail)
@@ -82,8 +98,8 @@ class DetailManager(
         val ciData = getCiData(detail)
         val ci = detailCiFactory.createDetailCi(ciData)
         detail.compositeImage = ci
-        detail.updatePosInGridXy()
-        touchHandler.setTouchListener(detail)
+        if (detail is MotileDetail)
+            touchHandler.setTouchListener(detail)
     }
 
     private fun getCiData(detail: Detail): DetailCiData {

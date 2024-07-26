@@ -9,7 +9,7 @@ class Hole(
     val glowIv: ImageView,
     val centerX: Int,
     val centerY: Int,
-    val position: IntXY
+    val columnRow: IntXY
 ) {
 
     fun highlight(active: Boolean) {

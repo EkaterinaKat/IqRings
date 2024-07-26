@@ -32,12 +32,12 @@ fun convertDirection(direction: Int, rotation: Int, flip: Boolean): Int {
 }
 
 fun getSideHolePosition(centerHole: Hole, direction: Int): IntXY {
-    val d = centerHole.position.y % 2
+    val d = centerHole.columnRow.y % 2
     val r1 = (6 + direction + (1 + 3 * d)) % 6
 
-    val y = centerHole.position.y - (if (direction > 0) sgn(direction - 3) else 0)
+    val y = centerHole.columnRow.y - (if (direction > 0) sgn(direction - 3) else 0)
     val x =
-        centerHole.position.x - sign(d * 1.0 - 0.5) * ((if (r1 < 3) r1 % 2 else 0) - (if (r1 >= 3) 1 else 0))
+        centerHole.columnRow.x - sign(d * 1.0 - 0.5) * ((if (r1 < 3) r1 % 2 else 0) - (if (r1 >= 3) 1 else 0))
     return IntXY(x.toInt(), y)
 }
 
@@ -55,9 +55,14 @@ fun getDetailGridXyByGridXy(gridXY: IntXY, image: CompositeImage): IntXY {
     return IntXY(x, y)
 }
 
-fun getOriginallyInstalledDetails(exercise: Exercise): List<InstalledDetail> {
+fun getFixedDetails(exercise: Exercise): List<InstalledDetail> {
     val gson = Gson()
     val response = gson.fromJson(exercise.configStr, GsonTaskConfig::class.java)
     return response.details.filter { response.initial.contains(it.name.toInt()) }
 }
+
+fun getRowColumnByIndex(index: Int, columnNum: Int): IntXY {
+    return IntXY(index / columnNum, index % columnNum)
+}
+
 

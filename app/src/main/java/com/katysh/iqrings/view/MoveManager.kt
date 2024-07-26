@@ -1,6 +1,6 @@
 package com.katysh.iqrings.view
 
-import com.katysh.iqrings.model.Detail
+import com.katysh.iqrings.model.MotileDetail
 
 class MoveManager(
     private var topBound: Int,
@@ -12,7 +12,7 @@ class MoveManager(
 
     //dpn - dragged part new coordinate
     fun onActionMove(
-        detail: Detail,
+        detail: MotileDetail,
         draggedPart: CiPart,
         dpnX: Float,
         dpnY: Float
@@ -33,7 +33,7 @@ class MoveManager(
         detail.x = newDetailX.toInt()
         detail.y = newDetailY.toInt()
 
-        for (part in detail.compositeImage.parts) {
+        for (part in detail.compositeImage!!.parts) {
             val x = correctedDpnX - draggedPart.x + part.x
             val y = correctedDpnY - draggedPart.y + part.y
 
@@ -47,7 +47,7 @@ class MoveManager(
         interactionManager.reportMove(detail)
     }
 
-    fun onActionUp(detail: Detail) {
+    fun onActionUp(detail: MotileDetail) {
         //todo
 
         //todo мб interactionManager должен только о чём то сообщать CiMoveManager

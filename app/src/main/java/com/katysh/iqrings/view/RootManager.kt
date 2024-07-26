@@ -15,7 +15,9 @@ class RootManager(
         root.addView(imageView, params)
     }
 
-    fun remove(ci: CompositeImage) {
+    fun remove(ci: CompositeImage?) {
+        if (ci == null)
+            return
         for (part in ci.parts) {
             root.removeView(part.imageView)
         }

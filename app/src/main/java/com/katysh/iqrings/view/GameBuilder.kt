@@ -3,12 +3,10 @@ package com.katysh.iqrings.view
 import android.content.Context
 import android.widget.RelativeLayout
 import com.katysh.iqrings.coreadapter.Exercise
-import com.katysh.iqrings.coreadapter.detailConfig0
-import com.katysh.iqrings.coreadapter.detailConfig1
-import com.katysh.iqrings.coreadapter.detailConfig2
 import com.katysh.iqrings.coreadapter.getConfigByName
-import com.katysh.iqrings.model.IntXY
-import com.katysh.iqrings.util.getOriginallyInstalledDetails
+import com.katysh.iqrings.coreadapter.getMotileDetails
+import com.katysh.iqrings.util.getFixedDetails
+import com.katysh.iqrings.util.getRowColumnByIndex
 
 class GameBuilder(
     context: Context,
@@ -24,19 +22,23 @@ class GameBuilder(
     private val moveManager =
         MoveManager(0, screenScale.sh, 0, screenScale.sw, interactionManager)
     private val detailManager =
-        DetailManager(context, gameSizeParams, moveManager, rootManager)
+        DetailManager(context, gameSizeParams, moveManager, rootManager, field)
 
     fun startGame() {
 
-        val originallyInstalledDetails = getOriginallyInstalledDetails(exercise)
+        val fixedDetails = getFixedDetails(exercise)
 
-        originallyInstalledDetails.forEach {
-            val config = getConfigByName(it.name)
-            val state = it.state
+        fixedDetails.forEach {
+            detailManager.addFixedDetail(getConfigByName(it.name), it.state)
         }
 
-        detailManager.addDetail(detailConfig1, IntXY(0, 0))
-        detailManager.addDetail(detailConfig0, IntXY(1, 0))
-        detailManager.addDetail(detailConfig2, IntXY(2, 0))
+        val motileConfigs = getMotileDetails(fixedDetails.map { it.name })
+        if (motileConfigs.size > 6) {
+            throw RuntimeException("по техническим причинам мы не можем разместить больше 6 подвижных фигур")
+        }
+
+        for ((index, config) in motileConfigs.withIndex()) {
+            detailManager.addMotileDetail(config, getRowColumnByIndex(index, 3))
+        }
     }
 }

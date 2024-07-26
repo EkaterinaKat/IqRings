@@ -108,6 +108,10 @@ fun getConfigByName(name: String): DetailConfig {
     return nameToConfigMap[name] ?: throw RuntimeException()
 }
 
+fun getMotileDetails(fixedDetails: List<String>): List<DetailConfig> {
+    return ArrayList(nameToConfigMap.filter { !fixedDetails.contains(it.key) }.values)
+}
+
 val nameToConfigMap: Map<String, DetailConfig> = mapOf(
     "00" to detailConfig0,
     "01" to detailConfig1,

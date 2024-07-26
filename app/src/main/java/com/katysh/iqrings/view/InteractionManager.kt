@@ -1,8 +1,8 @@
 package com.katysh.iqrings.view
 
-import com.katysh.iqrings.model.Detail
 import com.katysh.iqrings.model.Field
 import com.katysh.iqrings.model.Hole
+import com.katysh.iqrings.model.MotileDetail
 import com.katysh.iqrings.util.getSideHolePosition
 
 class InteractionManager(
@@ -12,11 +12,11 @@ class InteractionManager(
 
     private val holeActionRadius = sizeParams.holeDistance / 4
 
-    fun reportMove(detail: Detail) {
+    fun reportMove(detail: MotileDetail) {
         highlightHoles(detail)
     }
 
-    private fun highlightHoles(detail: Detail) {
+    private fun highlightHoles(detail: MotileDetail) {
         val minX = detail.x!! - holeActionRadius
         val maxX = detail.x!! + holeActionRadius
         val minY = detail.y!! - holeActionRadius
