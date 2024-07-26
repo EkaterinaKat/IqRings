@@ -103,3 +103,22 @@ val detailConfig11 = DetailConfig(
     Solid,
     Ball
 )
+
+fun getConfigByName(name: String): DetailConfig {
+    return nameToConfigMap[name] ?: throw RuntimeException()
+}
+
+val nameToConfigMap: Map<String, DetailConfig> = mapOf(
+    "00" to detailConfig0,
+    "01" to detailConfig1,
+    "02" to detailConfig2,
+    "03" to detailConfig3,
+    "04" to detailConfig4,
+    "05" to detailConfig5,
+    "06" to detailConfig6,
+    "07" to detailConfig7,
+    "08" to detailConfig8,
+    "09" to detailConfig9,
+    "10" to detailConfig10,
+    "11" to detailConfig11,
+)
