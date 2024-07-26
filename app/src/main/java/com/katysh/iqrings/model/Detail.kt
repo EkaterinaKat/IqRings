@@ -3,7 +3,10 @@ package com.katysh.iqrings.model
 import com.katysh.iqrings.util.convertDirection
 import com.katysh.iqrings.view.CompositeImage
 
-abstract class Detail(val configuration: DetailConfig) {
+abstract class Detail(
+    val configuration: DetailConfig,
+    val imageSet: ImageSet
+) {
 
     var compositeImage: CompositeImage? = null
         set(value) {

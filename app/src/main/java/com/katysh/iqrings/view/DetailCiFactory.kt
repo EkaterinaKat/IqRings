@@ -2,11 +2,11 @@ package com.katysh.iqrings.view
 
 import android.content.Context
 import android.widget.ImageView
-import com.katysh.iqrings.R
 import com.katysh.iqrings.model.Ball
 import com.katysh.iqrings.model.DetailCiData
 import com.katysh.iqrings.model.Element
 import com.katysh.iqrings.model.Holey
+import com.katysh.iqrings.model.ImageSet
 import com.katysh.iqrings.model.Solid
 import com.katysh.iqrings.util.getImageView
 
@@ -26,7 +26,7 @@ class DetailCiFactory(
     private val bbBeamLength = gsm.bbBeamLength.toInt()
     private val beamWidth = gsm.beamWidth.toInt()
 
-    fun createDetailCi(data: DetailCiData): CompositeImage {
+    fun createDetailCi(data: DetailCiData, imageSet: ImageSet): CompositeImage {
         val parts = mutableListOf<CiPart>()
 
         val centerCenterCoords = Coordinates(0, 0)
@@ -37,18 +37,18 @@ class DetailCiFactory(
         val centerElement = Element(data.center, centerCenterCoords)
         val rightElement = Element(data.right, rightCenterCoords)
 
-        parts.add(getBeamPart(centerElement, leftElement))
-        parts.add(getBeamPart(rightElement, centerElement))
+        parts.add(getBeamPart(centerElement, leftElement, imageSet))
+        parts.add(getBeamPart(rightElement, centerElement, imageSet))
 
-        parts.add(getElementPart(leftElement))
-        parts.add(getElementPart(centerElement))
-        parts.add(getElementPart(rightElement))
+        parts.add(getElementPart(leftElement, imageSet))
+        parts.add(getElementPart(centerElement, imageSet))
+        parts.add(getElementPart(rightElement, imageSet))
 
         return CompositeImage(parts)
     }
 
-    private fun getBeamPart(element1: Element, element2: Element): CiPart {
-        val imageView = getImageView(context, R.mipmap.beam)
+    private fun getBeamPart(element1: Element, element2: Element, imageSet: ImageSet): CiPart {
+        val imageView = getImageView(context, imageSet.beam)
         imageView.scaleType = ImageView.ScaleType.FIT_XY
 
         val firstElement = if (element1.center.x < element2.center.x) element1 else element2
@@ -104,17 +104,17 @@ class DetailCiFactory(
         }
     }
 
-    private fun getElementPart(element: Element): CiPart {
+    private fun getElementPart(element: Element, imageSet: ImageSet): CiPart {
         return when (element.type) {
-            is Ball -> getBallPart(element.center)
-            is Holey -> getHoleyPart(element.center, element.type.holes)
-            is Solid -> getSolidPart(element.center)
+            is Ball -> getBallPart(element.center, imageSet)
+            is Holey -> getHoleyPart(element.center, element.type.holes, imageSet)
+            is Solid -> getSolidPart(element.center, imageSet)
         }
     }
 
-    private fun getBallPart(centerCoordinates: Coordinates): CiPart {
+    private fun getBallPart(centerCoordinates: Coordinates, imageSet: ImageSet): CiPart {
         return CiPart(
-            getImageView(context, R.mipmap.ball),
+            getImageView(context, imageSet.ball),
             centerCoordinates.x - halfBallSize,
             centerCoordinates.y - halfBallSize,
             ballSize,
@@ -122,9 +122,9 @@ class DetailCiFactory(
         )
     }
 
-    private fun getSolidPart(centerCoordinates: Coordinates): CiPart {
+    private fun getSolidPart(centerCoordinates: Coordinates, imageSet: ImageSet): CiPart {
         return CiPart(
-            getImageView(context, R.mipmap.solid),
+            getImageView(context, imageSet.solid),
             centerCoordinates.x - halfRingSize,
             centerCoordinates.y - halfRingSize,
             ringSize,
@@ -132,18 +132,22 @@ class DetailCiFactory(
         )
     }
 
-    private fun getHoleyPart(centerCoordinates: Coordinates, holes: List<Int>): CiPart {
+    private fun getHoleyPart(
+        centerCoordinates: Coordinates,
+        holes: List<Int>,
+        imageSet: ImageSet
+    ): CiPart {
 
         val imageView = when (holes.size) {
             1 -> {
-                val iv = getImageView(context, R.mipmap.holey1)
+                val iv = getImageView(context, imageSet.holey1)
                 val rotationAngle = holes[0] * 60
                 iv.rotation = rotationAngle.toFloat()
                 iv
             }
 
             2 -> {
-                val iv = getImageView(context, R.mipmap.holey2)
+                val iv = getImageView(context, imageSet.holey2)
                 if (holes[0] + 1 != holes[1]) {
                     throw RuntimeException()
                 }

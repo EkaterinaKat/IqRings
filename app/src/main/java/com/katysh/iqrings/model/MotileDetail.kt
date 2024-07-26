@@ -9,7 +9,7 @@ import com.katysh.iqrings.util.getDetailGridXyByGridXy
 class MotileDetail(
     configuration: DetailConfig,
     private val gridXY: IntXY
-) : Detail(configuration) {
+) : Detail(configuration, ImageSet.SET_1) {
 
     //эти значения должны устанавливаться только во время движения
     // и использоваться только после начала движения
@@ -18,7 +18,7 @@ class MotileDetail(
 
     lateinit var detailGridXY: IntXY
 
-    fun updateDetailGridXY() {
+    private fun updateDetailGridXY() {
         detailGridXY = getDetailGridXyByGridXy(gridXY, compositeImage!!)
     }
 

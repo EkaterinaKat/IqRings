@@ -96,7 +96,7 @@ class DetailManager(
 
     private fun setCi(detail: Detail) {
         val ciData = getCiData(detail)
-        val ci = detailCiFactory.createDetailCi(ciData)
+        val ci = detailCiFactory.createDetailCi(ciData, detail.imageSet)
         detail.compositeImage = ci
         if (detail is MotileDetail)
             touchHandler.setTouchListener(detail)
