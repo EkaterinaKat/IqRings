@@ -5,6 +5,7 @@ import android.widget.RelativeLayout
 import com.katysh.iqrings.coreadapter.Exercise
 import com.katysh.iqrings.coreadapter.getConfigByName
 import com.katysh.iqrings.coreadapter.getMotileDetails
+import com.katysh.iqrings.model.ScreenBounds
 import com.katysh.iqrings.util.getFixedDetails
 import com.katysh.iqrings.util.getRowColumnByIndex
 
@@ -18,9 +19,9 @@ class GameBuilder(
     private val rootManager = RootManager(root)
 
     private val field = FieldCreator(gameSizeParams, rootManager, context).createAndDrawField()
-    private val interactionManager = InteractionManager(field, gameSizeParams)
+    private val interactionManager = InteractionManager(field, gameSizeParams, exercise)
     private val moveManager =
-        MoveManager(0, screenScale.sh, 0, screenScale.sw, interactionManager)
+        MoveManager(ScreenBounds(screenScale), interactionManager)
     private val detailManager =
         DetailManager(context, gameSizeParams, moveManager, rootManager, field)
 

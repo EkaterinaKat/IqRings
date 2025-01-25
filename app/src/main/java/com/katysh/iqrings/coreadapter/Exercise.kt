@@ -47,13 +47,20 @@ class Exercise(
     private external fun isCompleted(ptr: Long): Boolean
 
     fun isDetailFits(
-        detailNumber: Short,
-        row: Short,
-        column: Short,
-        rotation: Short,
+        detailNumber: Int,
+        row: Int,
+        column: Int,
+        rotation: Int,
         side: Boolean
     ): Boolean {
-        return isDetailFits(nativePtr, detailNumber, row, column, rotation, side)
+        return isDetailFits(
+            nativePtr,
+            detailNumber.toShort(),
+            row.toShort(),
+            column.toShort(),
+            rotation.toShort(),
+            side
+        )
     }
 
     fun insertDetail(

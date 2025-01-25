@@ -66,6 +66,7 @@ class DetailManager(
         placeOnScreen(detail.compositeImage!!, detail.detailGridXY)
     }
 
+    //todo это не должно разве быть где-то в MoveEngine?
     private fun placeOnScreen(compositeImage: CompositeImage, xy: IntXY) {
         for (part in compositeImage.parts) {
             rootManager.placeOnScreen(
