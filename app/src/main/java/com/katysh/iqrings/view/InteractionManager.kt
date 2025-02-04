@@ -64,10 +64,10 @@ class InteractionManager(
     }
 
     private fun centerElementNearHole(detail: MotileDetail, hole: Hole): Boolean {
-        val minX = detail.x!! - holeActionRadius
-        val maxX = detail.x!! + holeActionRadius
-        val minY = detail.y!! - holeActionRadius
-        val maxY = detail.y!! + holeActionRadius
+        val minX = detail.x - holeActionRadius
+        val maxX = detail.x + holeActionRadius
+        val minY = detail.y - holeActionRadius
+        val maxY = detail.y + holeActionRadius
 
         return hole.centerX > minX
                 && hole.centerX < maxX

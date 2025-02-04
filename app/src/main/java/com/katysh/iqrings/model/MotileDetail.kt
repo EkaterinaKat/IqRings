@@ -11,10 +11,8 @@ class MotileDetail(
     private val gridXY: IntXY
 ) : Detail(configuration, ImageSet.SET_1) {
 
-    //эти значения должны устанавливаться только во время движения
-    // и использоваться только после начала движения
-    var x: Int? = null
-    var y: Int? = null
+    var x: Int = gridXY.x
+    var y: Int = gridXY.y
 
     lateinit var detailGridXY: IntXY
 
