@@ -11,9 +11,11 @@ import com.katysh.iqrings.util.getRowColumnByIndex
 
 class GameBuilder(
     context: Context,
-    root: RelativeLayout,
-    private val exercise: Exercise
+    root: RelativeLayout
 ) {
+    private val exercise = Exercise(context, "junior25.json")
+    private val gameProgressManager = GameProgressManager(exercise)
+
     private val screenScale = ScreenScale(context)
     private val gameSizeParams = GameSizeParams(screenScale)
     private val rootManager = RootManager(root)
@@ -21,12 +23,19 @@ class GameBuilder(
     private val field = FieldCreator(gameSizeParams, rootManager, context).createAndDrawField()
     private val interactionManager = InteractionManager(field, gameSizeParams, exercise)
     private val moveManager =
-        MoveManager(ScreenBounds(screenScale), interactionManager, exercise)
+        MoveManager(ScreenBounds(screenScale), interactionManager)
     private val detailManager =
         DetailManager(context, gameSizeParams, moveManager, rootManager, field)
 
-    fun startGame() {
+    private val controller = Controller(gameProgressManager)
 
+    fun startGame() {
+        moveManager.controller = controller
+
+        addAllDetailsOnField()
+    }
+
+    private fun addAllDetailsOnField() {
         val fixedDetails = getFixedDetails(exercise)
 
         fixedDetails.forEach {
