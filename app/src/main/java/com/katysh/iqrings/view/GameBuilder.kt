@@ -25,21 +25,23 @@ class GameBuilder(
     private val moveManager =
         MoveManager(ScreenBounds(screenScale), interactionManager)
     private val detailManager =
-        DetailManager(context, gameSizeParams, moveManager, rootManager, field)
+        DetailManager(context, gameSizeParams, moveManager, field)
 
-    private val controller = Controller(gameProgressManager)
+    private val controller = Controller(gameProgressManager, rootManager)
 
     fun startGame() {
         moveManager.controller = controller
+        detailManager.controller = controller
 
-        addAllDetailsOnField()
+        placeAllDetailsOnField()
     }
 
-    private fun addAllDetailsOnField() {
+    private fun placeAllDetailsOnField() {
         val fixedDetails = getFixedDetails(exercise)
 
         fixedDetails.forEach {
-            detailManager.addFixedDetail(getConfigByName(it.name), it.state)
+            val detail = detailManager.getFixedDetail(getConfigByName(it.name), it.state)
+            rootManager.placeFixedDetail(detail)
         }
 
         val motileConfigs = getMotileDetails(fixedDetails.map { it.name })
@@ -48,7 +50,8 @@ class GameBuilder(
         }
 
         for ((index, config) in motileConfigs.withIndex()) {
-            detailManager.addMotileDetail(config, getRowColumnByIndex(index, 3))
+            val detail = detailManager.getMotileDetail(config, getRowColumnByIndex(index, 3))
+            rootManager.placeInGrid(detail)
         }
     }
 }
