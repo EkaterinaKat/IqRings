@@ -28,6 +28,10 @@ class MoveEngine(
         moveByNewDetailCenterCoords(detail, newDetailX.toInt(), newDetailY.toInt())
     }
 
+    fun moveDetailToInitPlaceInGrid(detail: MotileDetail) {
+        moveByNewDetailCenterCoords(detail, detail.detailGridXY.x, detail.detailGridXY.y)
+    }
+
     fun moveByNewDetailCenterCoords(detail: MotileDetail, newDetailX: Int, newDetailY: Int) {
         detail.x = newDetailX
         detail.y = newDetailY

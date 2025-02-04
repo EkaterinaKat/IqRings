@@ -64,13 +64,20 @@ class Exercise(
     }
 
     fun insertDetail(
-        detailNumber: Short,
-        row: Short,
-        column: Short,
-        rotation: Short,
+        detailNumber: Int,
+        row: Int,
+        column: Int,
+        rotation: Int,
         side: Boolean
     ) {
-        insertDetail(nativePtr, detailNumber, row, column, rotation, side)
+        insertDetail(
+            nativePtr,
+            detailNumber.toShort(),
+            row.toShort(),
+            column.toShort(),
+            rotation.toShort(),
+            side
+        )
     }
 
     fun removeDetail(detailNumber: Short) {

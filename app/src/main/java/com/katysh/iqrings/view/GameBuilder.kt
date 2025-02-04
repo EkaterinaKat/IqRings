@@ -21,7 +21,7 @@ class GameBuilder(
     private val field = FieldCreator(gameSizeParams, rootManager, context).createAndDrawField()
     private val interactionManager = InteractionManager(field, gameSizeParams, exercise)
     private val moveManager =
-        MoveManager(ScreenBounds(screenScale), interactionManager)
+        MoveManager(ScreenBounds(screenScale), interactionManager, exercise)
     private val detailManager =
         DetailManager(context, gameSizeParams, moveManager, rootManager, field)
 
