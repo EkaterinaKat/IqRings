@@ -8,8 +8,9 @@ import com.katysh.iqrings.util.getDetailGridXyByGridXy
  */
 class MotileDetail(
     configuration: DetailConfig,
-    private val gridXY: IntXY
-) : Detail(configuration, ImageSet.SET_1) {
+    imageSet: ImageSet,
+    private val gridXY: IntXY,
+) : Detail(configuration, imageSet) {
 
     var x: Int = gridXY.x
     var y: Int = gridXY.y

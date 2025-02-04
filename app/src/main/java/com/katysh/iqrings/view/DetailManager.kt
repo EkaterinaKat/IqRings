@@ -9,6 +9,7 @@ import com.katysh.iqrings.model.ElementType
 import com.katysh.iqrings.model.Field
 import com.katysh.iqrings.model.FixedDetail
 import com.katysh.iqrings.model.Holey
+import com.katysh.iqrings.model.ImageSet
 import com.katysh.iqrings.model.IntXY
 import com.katysh.iqrings.model.MotileDetail
 import com.katysh.iqrings.model.Solid
@@ -47,9 +48,13 @@ class DetailManager(
         onDoubleClick = { flipByClick(it) }
     )
 
-    fun getMotileDetail(config: DetailConfig, gridRowColumn: IntXY): MotileDetail {
+    fun getMotileDetail(
+        config: DetailConfig,
+        gridRowColumn: IntXY,
+        imageSet: ImageSet
+    ): MotileDetail {
         val gridXY = gameSizeParams.getGridXyByGridRowColumn(gridRowColumn)
-        val detail = MotileDetail(config, gridXY)
+        val detail = MotileDetail(config, imageSet, gridXY)
         setCi(detail)
         return detail
     }

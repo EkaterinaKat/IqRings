@@ -5,6 +5,7 @@ import android.widget.RelativeLayout
 import com.katysh.iqrings.coreadapter.Exercise
 import com.katysh.iqrings.coreadapter.getConfigByName
 import com.katysh.iqrings.coreadapter.getMotileDetails
+import com.katysh.iqrings.model.ImageSet
 import com.katysh.iqrings.model.ScreenBounds
 import com.katysh.iqrings.util.getFixedDetails
 import com.katysh.iqrings.util.getRowColumnByIndex
@@ -49,8 +50,12 @@ class GameBuilder(
             throw RuntimeException("по техническим причинам мы не можем разместить больше 6 подвижных фигур")
         }
 
-        for ((index, config) in motileConfigs.withIndex()) {
-            val detail = detailManager.getMotileDetail(config, getRowColumnByIndex(index, 3))
+        for (index in motileConfigs.indices) {
+            val detail = detailManager.getMotileDetail(
+                motileConfigs[index],
+                getRowColumnByIndex(index, 3),
+                ImageSet.getColorByIndex(index)
+            )
             rootManager.placeInGrid(detail)
         }
     }

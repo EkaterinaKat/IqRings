@@ -9,6 +9,66 @@ enum class ImageSet(
     val holey2: Int,
     val solid: Int
 ) {
-    SET_1(R.mipmap.beam_1, R.mipmap.ball_1, R.mipmap.holey1_1, R.mipmap.holey2_1, R.mipmap.solid_1),
-    SET_2(R.mipmap.beam_2, R.mipmap.ball_2, R.mipmap.holey1_2, R.mipmap.holey2_2, R.mipmap.solid_2)
+    SHINY_PURPLE(
+        R.mipmap.beam_1,
+        R.mipmap.ball_1,
+        R.mipmap.holey1_1,
+        R.mipmap.holey2_1,
+        R.mipmap.solid_1
+    ),
+
+    SHINY_GREY(
+        R.mipmap.beam_2,
+        R.mipmap.ball_2,
+        R.mipmap.holey1_2,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    ),
+
+    GREY(
+        R.mipmap.grey_beam,
+        R.mipmap.grey_ball,
+        R.mipmap.grey_holey1,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    ),
+
+    RED(
+        R.mipmap.red_beam,
+        R.mipmap.red_ball,
+        R.mipmap.red_holey1,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    ),
+
+    BLUE(
+        R.mipmap.beam_2,
+        R.mipmap.ball_2,
+        R.mipmap.blue_holey1,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    ),
+
+    GREEN(
+        R.mipmap.beam_2,
+        R.mipmap.ball_2,
+        R.mipmap.green_holey1,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    ),
+
+    YELLOW(
+        R.mipmap.beam_2,
+        R.mipmap.ball_2,
+        R.mipmap.yellow_holey1,
+        R.mipmap.holey2_2,
+        R.mipmap.solid_2
+    );
+
+    companion object {
+        fun getColorByIndex(index: Int): ImageSet {
+            return listOf(RED, GREEN, BLUE, YELLOW)[index]
+        }
+    }
+
 }
