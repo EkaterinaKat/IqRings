@@ -12,6 +12,10 @@ class Controller(
         gameProgressManager.insertDetail(detail, hole)
     }
 
+    fun reportDetailReturnsToItsPlaceInGrid(detail: MotileDetail) {
+        gameProgressManager.remove(detail)
+    }
+
     fun reportDetailChangedCi(detail: MotileDetail, oldCi: CompositeImage) {
         rootManager.remove(oldCi)
         rootManager.placeInGrid(detail)

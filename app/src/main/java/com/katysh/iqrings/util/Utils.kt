@@ -1,5 +1,6 @@
 package com.katysh.iqrings.util
 
+import android.app.AlertDialog
 import android.content.Context
 import android.widget.ImageView
 import com.google.gson.Gson
@@ -63,6 +64,17 @@ fun getFixedDetails(exercise: Exercise): List<InstalledDetail> {
 
 fun getRowColumnByIndex(index: Int, columnNum: Int): IntXY {
     return IntXY(index / columnNum, index % columnNum)
+}
+
+fun showAlertDialog(context: Context, message: String) {
+    val builder = AlertDialog.Builder(context)
+    builder.setTitle("Сообщение")
+    builder.setMessage(message)
+    builder.setPositiveButton("ОК") { dialog, _ ->
+        dialog.dismiss()
+    }
+    val dialog = builder.create()
+    dialog.show()
 }
 
 

@@ -80,8 +80,8 @@ class Exercise(
         )
     }
 
-    fun removeDetail(detailNumber: Short) {
-        removeDetail(nativePtr, detailNumber)
+    fun removeDetail(detailNumber: Int) {
+        removeDetail(nativePtr, detailNumber.toShort())
     }
 
     fun isCompleted(): Boolean {

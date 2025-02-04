@@ -29,6 +29,7 @@ class MoveManager(
             controller!!.reportDetailInsertion(detail, hole)
         } else {
             moveEngine.moveDetailToInitPlaceInGrid(detail)
+            controller!!.reportDetailReturnsToItsPlaceInGrid(detail)
         }
         interactionManager.reportActionUp()
     }

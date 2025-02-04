@@ -15,7 +15,7 @@ class GameBuilder(
     root: RelativeLayout
 ) {
     private val exercise = Exercise(context, "junior25.json")
-    private val gameProgressManager = GameProgressManager(exercise)
+    private val gameProgressManager = GameProgressManager(exercise, context)
 
     private val screenScale = ScreenScale(context)
     private val gameSizeParams = GameSizeParams(screenScale)
