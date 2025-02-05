@@ -12,13 +12,21 @@ class InteractionManager(
     private val exercise: Exercise
 ) {
 
+    var controller: Controller? = null
+
     private val holeActionRadius = sizeParams.holeDistance / 4
 
-    fun reportActionUp() {
+    fun onReleaseDetail(detail: MotileDetail) {
+        val hole = getHoleToInstallDetail(detail)
+        if (hole != null) {
+            controller!!.reportDetailInsertion(detail, hole)
+        } else {
+            controller!!.reportDetailReturnsToItsPlaceInGrid(detail)
+        }
         field.turnOffHighlightion()
     }
 
-    fun getHoleToInstallDetail(detail: MotileDetail): Hole? {
+    private fun getHoleToInstallDetail(detail: MotileDetail): Hole? {
         for (hole in field.holes) {
             if (centerElementNearHole(detail, hole) && detailFitsInHole(detail, hole)) {
                 return hole

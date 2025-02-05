@@ -7,6 +7,7 @@ class MoveEngine(
     private val bounds: ScreenBounds
 ) {
 
+    //dpn - dragged part new coordinate
     fun moveByDraggedPartCoords(
         detail: MotileDetail,
         draggedPart: CiPart,

@@ -20,27 +20,26 @@ class GameBuilder(
     private val screenScale = ScreenScale(context)
     private val gameSizeParams = GameSizeParams(screenScale)
     private val rootManager = RootManager(root)
+    private val screenBounds = ScreenBounds(screenScale)
 
     private val field = FieldCreator(gameSizeParams, rootManager, context).createAndDrawField()
     private val interactionManager = InteractionManager(field, gameSizeParams, exercise)
-    private val moveManager =
-        MoveManager(ScreenBounds(screenScale), interactionManager)
     private val touchHandler = TouchHandler()
-    private val detailManager =
-        DetailManager(context, gameSizeParams, field, touchHandler)
+    private val detailManager = DetailManager(context, gameSizeParams, field, touchHandler)
+    private val moveEngine = MoveEngine(screenBounds)
 
     private val controller = Controller(
         gameProgressManager,
         rootManager,
         detailManager,
-        moveManager,
+        moveEngine,
         interactionManager
     )
 
     fun startGame() {
-        moveManager.controller = controller
         detailManager.controller = controller
         touchHandler.controller = controller
+        interactionManager.controller = controller
 
         placeAllDetailsOnField()
     }

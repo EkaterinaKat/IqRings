@@ -7,15 +7,17 @@ class Controller(
     private val gameProgressManager: GameProgressManager,
     private val rootManager: RootManager,
     private val detailManager: DetailManager,
-    private val moveManager: MoveManager,
+    private val moveEngine: MoveEngine,
     private val interactionManager: InteractionManager
 ) {
 
     fun reportDetailInsertion(detail: MotileDetail, hole: Hole) {
+        moveEngine.moveByNewDetailCenterCoords(detail, hole.centerX, hole.centerY)
         gameProgressManager.insertDetail(detail, hole)
     }
 
     fun reportDetailReturnsToItsPlaceInGrid(detail: MotileDetail) {
+        moveEngine.moveDetailToInitPlaceInGrid(detail)
         gameProgressManager.remove(detail)
     }
 
@@ -33,11 +35,11 @@ class Controller(
     }
 
     fun reportActionUp(detail: MotileDetail) {
-        moveManager.onReleaseDetail(detail)
+        interactionManager.onReleaseDetail(detail)
     }
 
     fun reportActionMove(detail: MotileDetail, draggedPart: CiPart, dpnX: Float, dpnY: Float) {
-        moveManager.move(detail, draggedPart, dpnX, dpnY)
+        moveEngine.moveByDraggedPartCoords(detail, draggedPart, dpnX, dpnY)
         interactionManager.handleMovingDetailAndFieldInteraction(detail)
     }
 }
