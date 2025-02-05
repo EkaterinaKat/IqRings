@@ -1,5 +1,6 @@
 package com.katysh.iqrings.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.katysh.iqrings.model.Ball
 import com.katysh.iqrings.model.Detail
@@ -82,12 +83,17 @@ class DetailManager(
         controller!!.reportDetailChangedCi(detail, oldCi!!)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setCi(detail: Detail) {
         val ciData = getCiData(detail)
         val ci = detailCiFactory.createDetailCi(ciData, detail.imageSet)
+
+        if (detail is MotileDetail) {
+            ci.parts.forEach {
+                it.imageView.setOnTouchListener(touchHandler.getOnTouchListener(detail, it))
+            }
+        }
         detail.compositeImage = ci
-        if (detail is MotileDetail)
-            touchHandler.setTouchListener(detail)
     }
 
     private fun getCiData(detail: Detail): DetailCiData {
@@ -107,6 +113,10 @@ class DetailManager(
             is Holey -> {
                 val holes = element.holes.map { convertDirection(it, rotation, flip) }
                 Holey(holes)
+            }
+
+            else -> {
+                throw RuntimeException()
             }
         }
     }
