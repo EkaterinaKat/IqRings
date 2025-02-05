@@ -3,6 +3,7 @@ package com.katysh.iqrings.view
 import com.katysh.iqrings.model.MotileDetail
 import com.katysh.iqrings.model.ScreenBounds
 
+//todo может этот класс нам вообще не нужен
 class MoveManager(
     screenBounds: ScreenBounds,
     private val interactionManager: InteractionManager
@@ -12,17 +13,16 @@ class MoveManager(
     var controller: Controller? = null
 
     //dpn - dragged part new coordinate
-    fun onActionMove(
+    fun move(
         detail: MotileDetail,
         draggedPart: CiPart,
         dpnX: Float,
         dpnY: Float
     ) {
         moveEngine.moveByDraggedPartCoords(detail, draggedPart, dpnX, dpnY)
-        interactionManager.reportMove(detail)
     }
 
-    fun onActionUp(detail: MotileDetail) {
+    fun onReleaseDetail(detail: MotileDetail) {
         val hole = interactionManager.getHoleToInstallDetail(detail)
         if (hole != null) {
             moveEngine.moveByNewDetailCenterCoords(detail, hole.centerX, hole.centerY)

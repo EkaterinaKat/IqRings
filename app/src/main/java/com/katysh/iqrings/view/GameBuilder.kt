@@ -25,14 +25,22 @@ class GameBuilder(
     private val interactionManager = InteractionManager(field, gameSizeParams, exercise)
     private val moveManager =
         MoveManager(ScreenBounds(screenScale), interactionManager)
+    private val touchHandler = TouchHandler()
     private val detailManager =
-        DetailManager(context, gameSizeParams, moveManager, field)
+        DetailManager(context, gameSizeParams, field, touchHandler)
 
-    private val controller = Controller(gameProgressManager, rootManager)
+    private val controller = Controller(
+        gameProgressManager,
+        rootManager,
+        detailManager,
+        moveManager,
+        interactionManager
+    )
 
     fun startGame() {
         moveManager.controller = controller
         detailManager.controller = controller
+        touchHandler.controller = controller
 
         placeAllDetailsOnField()
     }

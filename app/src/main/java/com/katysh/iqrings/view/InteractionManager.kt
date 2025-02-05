@@ -14,10 +14,6 @@ class InteractionManager(
 
     private val holeActionRadius = sizeParams.holeDistance / 4
 
-    fun reportMove(detail: MotileDetail) {
-        handleDetailAndFieldInteraction(detail)
-    }
-
     fun reportActionUp() {
         field.turnOffHighlightion()
     }
@@ -31,17 +27,17 @@ class InteractionManager(
         return null
     }
 
-    private fun handleDetailAndFieldInteraction(detail: MotileDetail) {
-        var holeSuitableForCenterElement: Hole? = null
+     fun handleMovingDetailAndFieldInteraction(detail: MotileDetail) {
+         var holeSuitableForCenterElement: Hole? = null
 
-        for (hole in field.holes) {
-            if (centerElementNearHole(detail, hole) && detailFitsInHole(detail, hole)) {
-                holeSuitableForCenterElement = hole
-                break
-            }
-        }
-        highlightHoles(detail, holeSuitableForCenterElement)
-    }
+         for (hole in field.holes) {
+             if (centerElementNearHole(detail, hole) && detailFitsInHole(detail, hole)) {
+                 holeSuitableForCenterElement = hole
+                 break
+             }
+         }
+         highlightHoles(detail, holeSuitableForCenterElement)
+     }
 
     private fun highlightHoles(detail: MotileDetail, holeSuitableForCenterElement: Hole?) {
         if (holeSuitableForCenterElement == null) {

@@ -35,18 +35,13 @@ import com.katysh.iqrings.util.convertDirection
 class DetailManager(
     context: Context,
     private val gameSizeParams: GameSizeParams,
-    moveManager: MoveManager,
-    private val field: Field
+    private val field: Field,
+    private val touchHandler: TouchHandler
 ) {
 
     var controller: Controller? = null
 
     private val detailCiFactory = DetailCiFactory(context, gameSizeParams)
-    private val touchHandler = TouchHandler(
-        moveManager = moveManager,
-        onClick = { rotateByClick(it) },
-        onDoubleClick = { flipByClick(it) }
-    )
 
     fun getMotileDetail(
         config: DetailConfig,
@@ -70,12 +65,12 @@ class DetailManager(
         return detail
     }
 
-    private fun rotateByClick(detail: MotileDetail) {
+    fun rotate(detail: MotileDetail) {
         detail.rotation = convertDirection(detail.rotation, 1, false)
         onPositionChange(detail)
     }
 
-    private fun flipByClick(detail: MotileDetail) {
+    fun flip(detail: MotileDetail) {
         detail.flipped = !detail.flipped
         onPositionChange(detail)
     }

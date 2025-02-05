@@ -5,14 +5,11 @@ import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
 import com.katysh.iqrings.model.MotileDetail
-import com.katysh.iqrings.util.OneInKnob
 
 @SuppressLint("ClickableViewAccessibility")
-class TouchHandler(
-    private val moveManager: MoveManager? = null,
-    private val onClick: OneInKnob<MotileDetail>? = null,
-    private val onDoubleClick: OneInKnob<MotileDetail>? = null
-) {
+class TouchHandler {
+
+    var controller: Controller? = null
 
     fun setTouchListener(detail: MotileDetail) {
         var dX = 0f
@@ -37,12 +34,12 @@ class TouchHandler(
                         if (clickCount == 1) {
                             handler.postDelayed({
                                 if (clickCount == 1) {
-                                    onClick?.execute(detail)
+                                    controller!!.reportDetailClick(detail)
                                 }
                                 clickCount = 0
                             }, doubleClickTimeout)
                         } else if (clickCount == 2) {
-                            onDoubleClick?.execute(detail)
+                            controller!!.reportDetailDoubleClick(detail)
                             clickCount = 0
                         }
                     }
@@ -50,12 +47,12 @@ class TouchHandler(
                     MotionEvent.ACTION_MOVE -> {
                         val x = event.rawX + dX
                         val y = event.rawY + dY
-                        moveManager?.onActionMove(detail, it, x, y)
+                        controller!!.reportActionMove(detail, it, x, y)
                         clickCount = 0
                     }
 
                     MotionEvent.ACTION_UP -> {
-                        moveManager?.onActionUp(detail)
+                        controller!!.reportActionUp(detail)
                         if (Math.abs(event.rawX + dX - iv.x) > 5 || Math.abs(event.rawY + dY - iv.y) > 5) {
                             clickCount = 0
                         }
