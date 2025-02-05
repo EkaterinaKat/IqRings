@@ -15,7 +15,7 @@ class DetailCiFactory(
     gsm: GameSizeParams
 ) {
 
-    private val elementDistance = gsm.holeDistance.toInt()
+    private val elementCenterDistance = gsm.holeDistance.toInt()
     private val rowDistance = gsm.rowDistance.toInt()
     private val ballSize = gsm.ballElementSize.toInt()
     private val halfBallSize = ballSize / 2
@@ -56,13 +56,16 @@ class DetailCiFactory(
 
         val beamLength = getBeamLength(element1, element2)
 
-        val firstElementSize = if (firstElement.type is Ball) ballSize else ringSize
+        val firstElementHalfSize = (if (firstElement.type is Ball) ballSize else ringSize) / 2
+        val secondElementHalfSize = (if (secondElement.type is Ball) ballSize else ringSize) / 2
 
-        val x = firstElement.center.x + firstElementSize / 2
+        val elementsDistance = elementCenterDistance - firstElementHalfSize - secondElementHalfSize
+        val beamCenter = firstElement.center.x + firstElementHalfSize + elementsDistance / 2
+        val x = beamCenter - beamLength / 2
         val y = firstElement.center.y - beamWidth / 2
 
         if (element1.center.y != element2.center.y) {
-            imageView.pivotX = (firstElementSize/ 2 * -1).toFloat()
+            imageView.pivotX = (firstElementHalfSize * -1).toFloat()
             imageView.pivotY = beamWidth / 2.toFloat()
             imageView.rotation = if (secondElement.center.y > firstElement.center.y) 60f else 300f
         }
@@ -88,17 +91,17 @@ class DetailCiFactory(
 
     private fun getElementCoordinates(direction: Int): Coordinates {
         return when (direction) {
-            1 -> Coordinates(elementDistance / 2, rowDistance)
+            1 -> Coordinates(elementCenterDistance / 2, rowDistance)
 
-            2 -> Coordinates(-elementDistance / 2, rowDistance)
+            2 -> Coordinates(-elementCenterDistance / 2, rowDistance)
 
-            3 -> Coordinates(-elementDistance, 0)
+            3 -> Coordinates(-elementCenterDistance, 0)
 
-            4 -> Coordinates(-elementDistance / 2, -rowDistance)
+            4 -> Coordinates(-elementCenterDistance / 2, -rowDistance)
 
-            5 -> Coordinates(elementDistance / 2, -rowDistance)
+            5 -> Coordinates(elementCenterDistance / 2, -rowDistance)
 
-            0 -> Coordinates(elementDistance, 0)
+            0 -> Coordinates(elementCenterDistance, 0)
 
             else -> throw RuntimeException()
         }

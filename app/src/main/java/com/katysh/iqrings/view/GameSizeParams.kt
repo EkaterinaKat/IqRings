@@ -24,10 +24,10 @@ class GameSizeParams(ss: ScreenScale) {
     val ballElementSize = holeSize * 0.7
     val ringElementSize = holeSize
 
-    val beamWidth = holeDistance / 4
-    val brBeamLength = (holeDistance - ballElementSize / 2 - ringElementSize / 2)
-    val rrBeamLength = (holeDistance - ringElementSize)
-    val bbBeamLength = (holeDistance - ballElementSize)
+    val beamWidth = holeDistance / 5
+    val brBeamLength = (holeDistance - (ballElementSize / 2 + ringElementSize / 2) * 0.9)
+    val rrBeamLength = (holeDistance - ringElementSize * 0.9)
+    val bbBeamLength = (holeDistance - ballElementSize * 0.9)
 
     //ключ - колонка и ряд, значение координаты
     private val rowColumnToXyMap: MutableMap<IntXY, IntXY> = HashMap()

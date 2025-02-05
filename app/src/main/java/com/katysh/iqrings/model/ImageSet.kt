@@ -29,45 +29,45 @@ enum class ImageSet(
         R.mipmap.grey_beam,
         R.mipmap.grey_ball,
         R.mipmap.grey_holey1,
-        R.mipmap.holey2_2,
-        R.mipmap.solid_2
+        R.mipmap.grey_holey2,
+        R.mipmap.grey_solid
     ),
 
     RED(
         R.mipmap.red_beam,
         R.mipmap.red_ball,
         R.mipmap.red_holey1,
-        R.mipmap.holey2_2,
-        R.mipmap.solid_2
+        R.mipmap.red_holey2,
+        R.mipmap.red_solid
     ),
 
     BLUE(
-        R.mipmap.beam_2,
-        R.mipmap.ball_2,
+        R.mipmap.blue_beam,
+        R.mipmap.blue_ball,
         R.mipmap.blue_holey1,
-        R.mipmap.holey2_2,
-        R.mipmap.solid_2
+        R.mipmap.blue_holey2,
+        R.mipmap.blue_solid
     ),
 
     GREEN(
-        R.mipmap.beam_2,
-        R.mipmap.ball_2,
+        R.mipmap.green_beam,
+        R.mipmap.green_ball,
         R.mipmap.green_holey1,
-        R.mipmap.holey2_2,
-        R.mipmap.solid_2
+        R.mipmap.green_holey2,
+        R.mipmap.green_solid
     ),
 
-    YELLOW(
-        R.mipmap.beam_2,
-        R.mipmap.ball_2,
-        R.mipmap.yellow_holey1,
-        R.mipmap.holey2_2,
-        R.mipmap.solid_2
+    ORANGE(
+        R.mipmap.orange_beam,
+        R.mipmap.orange_ball,
+        R.mipmap.orange_holey1,
+        R.mipmap.orange_holey2,
+        R.mipmap.orange_solid
     );
 
     companion object {
         fun getColorByIndex(index: Int): ImageSet {
-            return listOf(RED, GREEN, BLUE, YELLOW)[index]
+            return listOf(RED, GREEN, BLUE, ORANGE)[index]
         }
     }
 
